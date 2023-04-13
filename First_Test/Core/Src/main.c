@@ -12,7 +12,7 @@
   * This software is licensed under terms that can be found in the LICENSE file
   * in the root directory of this software component.
   * If no LICENSE file comes with this software, it is provided AS-IS.
-  *
+  * ‰∏≤Âè£Êî∂Âèë-DMA+‰∏≤Âè£Á©∫Èó≤‰∏≠Êñ≠
   ******************************************************************************
   */
 /* USER CODE END Header */
@@ -45,7 +45,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-    uint8_t date[BUFLEN];
+uint8_t date[BUFLEN];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -100,8 +100,8 @@ int main(void)
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
     HAL_UART_Receive_DMA(&huart1,date,20);
-    __HAL_UART_CLEAR_IDLEFLAG(&huart1);  				//«Â≥˝IDLE±Í÷æ
-    __HAL_UART_ENABLE_IT(&huart1, UART_IT_IDLE);//ø™∆Ù¥Æø⁄ø’œ–÷–∂œ
+    __HAL_UART_CLEAR_IDLEFLAG(&huart1);  				//Ê∏ÖÁ©∫‰∏≠Êñ≠Ê†áÂøó
+    __HAL_UART_ENABLE_IT(&huart1, UART_IT_IDLE);// ‰ΩøËÉΩ‰∏≤Âè£Á©∫Èó≤‰∏≠Êñ≠
   /* USER CODE END 2 */
 
   /* Infinite loop */
