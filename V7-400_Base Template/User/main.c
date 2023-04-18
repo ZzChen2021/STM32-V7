@@ -45,6 +45,9 @@ void AppTaskUserIF(void *argument);
 void AppTaskLED(void *argument);
 void AppTaskMsgPro(void *argument);
 void AppTaskStart(void *argument);
+/**********************by ZCH***************************/
+void AppTaskUart1Rev(void *argument);
+/**********************by ZCH***************************/
 
 
 /*
@@ -98,7 +101,9 @@ osThreadId_t ThreadIdTaskUserIF = NULL;
 osThreadId_t ThreadIdTaskMsgPro = NULL;
 osThreadId_t ThreadIdTaskLED = NULL;
 osThreadId_t ThreadIdStart = NULL;
-
+/**********************by ZCH***************************/
+osThreadId_t ThreadIdTaskUart1Rev = NULL;
+/**********************by ZCH***************************/
 
 /*
 *********************************************************************************************************
@@ -127,6 +132,20 @@ int main (void)
 	
 	while(1);
 }
+
+/**********************by ZCH***************************/
+void AppTaskUart1Rev(void *argument)
+{
+    uint8_t date;
+    while(1)
+    {
+        while(comGetChar(COM1,&date))
+        {
+            comSendBuf(COM1,&date,sizeof(date));
+        }
+    }
+}
+/**********************by ZCH***************************/
 
 /*
 *********************************************************************************************************
@@ -254,7 +273,10 @@ static void AppTaskCreate (void)
 {
 	ThreadIdTaskMsgPro = osThreadNew(AppTaskMsgPro, NULL, &ThreadMsgPro_Attr);  
 	ThreadIdTaskLED = osThreadNew(AppTaskLED, NULL, &ThreadLED_Attr);  
-	ThreadIdTaskUserIF = osThreadNew(AppTaskUserIF, NULL, &ThreadUserIF_Attr);  
+	ThreadIdTaskUserIF = osThreadNew(AppTaskUserIF, NULL, &ThreadUserIF_Attr);
+    /**********************by ZCH***************************/
+    ThreadIdTaskUart1Rev = osThreadNew(AppTaskUart1Rev,NULL,NULL);
+    /**********************by ZCH***************************/
 }
 
 /***************************** 安富莱电子 www.armfly.com (END OF FILE) *********************************/

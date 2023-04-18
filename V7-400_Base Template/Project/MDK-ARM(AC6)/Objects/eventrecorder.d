@@ -1,10 +1,6 @@
-./objects/rtx_mempool.o: \
-  D:\Documents\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\RTOS2\RTX\Source\rtx_mempool.c \
-  D:\Documents\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\RTOS2\RTX\Source\rtx_lib.h \
-  D:\Program\ Files\ (x86)\Keil_v5\ARM\ARMCLANG\Bin\..\include\string.h \
-  D:\Documents\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\RTOS2\RTX\Include\rtx_def.h \
-  RTE\_Flash\RTE_Components.h RTE\CMSIS\RTX_Config.h \
-  D:\Documents\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\RTOS2\RTX\Source\rtx_core_c.h \
+./objects/eventrecorder.o: \
+  D:\Documents\AppData\Local\Arm\Packs\Keil\ARM_Compiler\1.7.2\Source\EventRecorder.c \
+  RTE\_Flash\RTE_Components.h \
   ..\..\Libraries\CMSIS\Device\ST\STM32H7xx\Include\stm32h7xx.h \
   ..\..\Libraries\CMSIS\Device\ST\STM32H7xx\Include\stm32h743xx.h \
   ..\..\Libraries\CMSIS\Include\core_cm7.h \
@@ -104,11 +100,6 @@
   ..\..\Libraries\STM32H7xx_HAL_Driver\Inc\stm32h7xx_ll_usb.h \
   ..\..\Libraries\STM32H7xx_HAL_Driver\Inc\stm32h7xx_hal_pcd_ex.h \
   ..\..\Libraries\STM32H7xx_HAL_Driver\Inc\stm32h7xx_hal_hcd.h \
-  D:\Documents\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\RTOS2\RTX\Source\rtx_core_cm.h \
-  D:\Program\ Files\ (x86)\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdbool.h \
-  D:\Documents\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\RTOS2\Include\os_tick.h \
-  D:\Documents\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\RTOS2\Include\cmsis_os2.h \
-  D:\Documents\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\RTOS2\RTX\Include\rtx_os.h \
-  D:\Documents\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\RTOS2\RTX\Include\rtx_evr.h \
+  D:\Program\ Files\ (x86)\Keil_v5\ARM\ARMCLANG\Bin\..\include\string.h \
   D:\Documents\AppData\Local\Arm\Packs\Keil\ARM_Compiler\1.7.2\Include\EventRecorder.h \
   RTE\Compiler\EventRecorderConf.h

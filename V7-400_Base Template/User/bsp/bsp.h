@@ -132,7 +132,10 @@
 /* 提供给其他C文件调用的函数 */
 void bsp_Init(void);
 void bsp_Idle(void);
+
+/**************by ZCH**************/
 void System_Init(void);
+/**************by ZCH**************/
 
 void bsp_GetCpuID(uint32_t *_id);
 void Error_Handler(char *file, uint32_t line);

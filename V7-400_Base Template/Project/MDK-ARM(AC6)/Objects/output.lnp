@@ -45,6 +45,8 @@
 ".\objects\rtx_timer.o"
 ".\objects\os_systick.o"
 ".\objects\rtx_config.o"
+".\objects\eventrecorder.o"
+".\objects\retarget_io.o"
 ".\objects\stm32h7xx_hal_msp.o"
 --library_type=microlib --strict --scatter ".\Objects\output.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols

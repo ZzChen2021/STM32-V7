@@ -103,4 +103,6 @@
   ..\..\Libraries\STM32H7xx_HAL_Driver\Inc\stm32h7xx_ll_usb.h \
   ..\..\Libraries\STM32H7xx_HAL_Driver\Inc\stm32h7xx_hal_pcd_ex.h \
   ..\..\Libraries\STM32H7xx_HAL_Driver\Inc\stm32h7xx_hal_hcd.h \
+  D:\Documents\AppData\Local\Arm\Packs\Keil\ARM_Compiler\1.7.2\Include\EventRecorder.h \
+  RTE\Compiler\EventRecorderConf.h \
   D:\Documents\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\RTOS2\RTX\Include\rtx_evr.h

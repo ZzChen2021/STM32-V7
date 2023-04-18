@@ -109,4 +109,6 @@
   D:\Documents\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\RTOS2\Include\os_tick.h \
   D:\Documents\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\RTOS2\Include\cmsis_os2.h \
   D:\Documents\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\RTOS2\RTX\Include\rtx_os.h \
-  D:\Documents\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\RTOS2\RTX\Include\rtx_evr.h
+  D:\Documents\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\RTOS2\RTX\Include\rtx_evr.h \
+  D:\Documents\AppData\Local\Arm\Packs\Keil\ARM_Compiler\1.7.2\Include\EventRecorder.h \
+  RTE\Compiler\EventRecorderConf.h
