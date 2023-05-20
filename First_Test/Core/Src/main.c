@@ -12,7 +12,7 @@
   * This software is licensed under terms that can be found in the LICENSE file
   * in the root directory of this software component.
   * If no LICENSE file comes with this software, it is provided AS-IS.
-  * 涓插彛鏀跺彂-DMA+涓插彛绌洪棽涓柇
+  * 串口收发-DMA+串口空闲中断
   ******************************************************************************
   */
 /* USER CODE END Header */
@@ -57,7 +57,7 @@ void SystemClock_Config(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)  //鎺ユ敹涓柇鍥炶皟鍑芥暟
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)  //接收中断回调函数
 {
     HAL_UART_Transmit_DMA(&huart1,date,BUFLEN);
     HAL_UART_Receive_IT(&huart1,date,BUFLEN);
@@ -96,8 +96,10 @@ int main(void)
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
     HAL_UART_Receive_DMA(&huart1,date,20);
-    __HAL_UART_CLEAR_IDLEFLAG(&huart1);  				//娓呯┖涓柇鏍囧織
-    __HAL_UART_ENABLE_IT(&huart1, UART_IT_IDLE);// 浣胯兘涓插彛绌洪棽涓柇
+    __HAL_UART_CLEAR_IDLEFLAG(&huart1);  				//清空中断标志
+    __HAL_UART_ENABLE_IT(&huart1, UART_IT_IDLE);// 使能串口空闲中断
+    uint8_t data[] = "串口空闲中断";
+    HAL_UART_Transmit(&huart1,data,sizeof("串口空闲中断")-1,50);
   /* USER CODE END 2 */
 
   /* Infinite loop */
