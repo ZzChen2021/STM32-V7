@@ -31,6 +31,10 @@
 
 #include "includes.h"
 
+#define MQ_SIZE 16
+uint8_t put_Uart = 5;
+uint8_t put_Uart2 = 8;
+uint8_t get_Uart;
 /*
 **********************************************************************************************************
 											函数声明
@@ -95,10 +99,10 @@ const osThreadAttr_t ThreadUserIF_Attr =
 /********************************************by ZCH******************************************************/
 const osThreadAttr_t ThreadUart1Rev_Attr = 
 {
-	.name = "osRtxThreadUart1Rev",
-	.attr_bits = osThreadDetached, 
-	.priority = osPriorityHigh5,
-	.stack_size = 1024,
+	.name = "osRtxThreadUart1Rev", /* 名字 */
+	.attr_bits = osThreadDetached, /* 类型 */
+	.priority = osPriorityHigh5,   /* 优先级 */
+	.stack_size = 1024,            /* 线程堆栈大小 */
 };
 const osThreadAttr_t ThreadKineMatics_Attr = 
 {
@@ -106,6 +110,10 @@ const osThreadAttr_t ThreadKineMatics_Attr =
 	.attr_bits = osThreadDetached, 
 	.priority = osPriorityHigh1,
 	.stack_size = 1024,
+};
+const osMessageQueueAttr_t msgQueue_CAN1_Attr = 
+{
+	.name = "Message_Queue_CAN1",
 };
 /********************************************by ZCH******************************************************/
 
@@ -117,6 +125,7 @@ osThreadId_t ThreadIdStart = NULL;
 /********************************************by ZCH******************************************************/
 osThreadId_t ThreadIdTaskUart1Rev = NULL;
 osThreadId_t ThreadIdKineMatics = NULL;
+osMessageQueueId_t msgQueue_ID_CAN1;
 /********************************************by ZCH******************************************************/
 
 /*
@@ -159,14 +168,14 @@ int main (void)
 */
 void AppTaskUart1Rev(void *argument)
 {
-    uint8_t date;
+    uint8_t data;
     while(1)
     {
-        while(comGetChar(COM1,&date))
+        while(comGetChar(COM1,&data))
         {
-            comSendBuf(COM1,&date,sizeof(date));
+            osMessageQueuePut(msgQueue_ID_CAN1,&data,NULL,NULL);
         }
-        osDelay(20); //任务如果有循环，要延时一段时间（阻塞），让出处理器的占用
+        osDelay(20); /* 任务如果有循环，要延时一段时间（阻塞），让出处理器的占用 */
     }
 }
 
@@ -185,6 +194,16 @@ void AppTaskKineMatics(void *argument)
 //    uint8_t p;
 //    KM(Tfk,&p);
 //    con_KM(Tfk,&p);
+    osStatus_t os_Status;
+    uint8_t ch;
+    while(1)
+    {
+        os_Status = osMessageQueueGet(msgQueue_ID_CAN1,&ch,NULL,osWaitForever);
+        if(os_Status == osOK)
+        {
+            printf("Get the message is %c\n",ch);
+        }
+    }
 
 }
 /********************************************by ZCH******************************************************/
@@ -335,7 +354,7 @@ void AppTaskStart(void *argument)
 /*
 *********************************************************************************************************
 *	函 数 名: AppTaskCreate
-*	功能说明: 创建应用任务
+*	功能说明: 创建应用任务（普通函数，不是线程）
 *	形    参: 无
 *	返 回 值: 无
 *********************************************************************************************************
@@ -348,5 +367,6 @@ static void AppTaskCreate (void)
     /**********************by ZCH***************************/
     ThreadIdTaskUart1Rev = osThreadNew(AppTaskUart1Rev,NULL,&ThreadUart1Rev_Attr);
     ThreadIdKineMatics = osThreadNew(AppTaskKineMatics,NULL,&ThreadKineMatics_Attr);
+    msgQueue_ID_CAN1 = osMessageQueueNew(MQ_SIZE,sizeof(put_Uart),&msgQueue_CAN1_Attr);
     /**********************by ZCH***************************/
 }
