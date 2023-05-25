@@ -211,6 +211,7 @@ void AppTaskUserIF(void *argument)
     uint8_t p;
     uint8_t i,j;
     EulerAngle ea;
+
     while(1)
     {
 		ucKeyCode = bsp_GetKey();
@@ -245,10 +246,9 @@ void AppTaskUserIF(void *argument)
                     KM(q,Tfk,&p);
                     ea = getEulerAngle(Tfk);
                     printf("getEulerAngle:\r\n");
-                    printf("%11.6f %11.6f %11.6f \r\n",ea.alpha,ea.bate,ea.gamma);
+                    printf("%11.6f %11.6f %11.6f %11.6f %11.6f %11.6f \r\n",ea.alpha,ea.bate,ea.gamma,ea.x,ea.y,ea.z);
                     getTFK(ea,Tfk);
                     printf("getTFK:\r\n");
-                    
                     for (i = 1; i < TFK_NUM; i++)
                     {
                         for (j = 1; j < TFK_NUM; j++)
@@ -259,17 +259,21 @@ void AppTaskUserIF(void *argument)
                     }
 					break;
                     
-				/* K2键按下，逆运动学计算并验证 */
+				/* K2键按下，逆运动学计算并验证，获得最优路径解，验证欧拉角 */
                 case KEY_DOWN_K3:
                     printf("逆运动学计算\r\n");               
-                    con_KM(Tfk,&p);
+                    con_KM(Tfk,&p,q);
+                    //p = 0;
+                    //KM(q,Tfk,&p);
+                    //printf("验证欧拉角：\n");
+                    //ea = getEulerAngle(Tfk);
+                    //printf("%11.6f %11.6f %11.6f %11.6f %11.6f %11.6f \r\n",ea.alpha,ea.bate,ea.gamma,ea.x,ea.y,ea.z);
                     break;
                 
 				default:                     
 					break;
 			}
 		}
-		
 		osDelay(20);
 	}
 }

@@ -164,14 +164,23 @@ void KM(float32_t q[TFK_NUM + 1], float32_t Tfk[TFK_NUM][TFK_NUM], uint8_t *p)
 *	返 回 值: 无
 *********************************************************************************************************
 */
-void con_KM(float32_t Tfk[TFK_NUM][TFK_NUM], uint8_t *p)
+void con_KM(float32_t Tfk[TFK_NUM][TFK_NUM], uint8_t *p,float32_t *bestQ)
 {
     uint8_t flag;
-    float32_t Q[TFK_NUM + 1], Q23, Sqart, cq1, sq1, sq4, cq23, sq23;
+    float32_t Q[6], Q23, Sqart, cq1, sq1, sq4, cq23, sq23;
     float32_t qx, qy; // 用于判断逆运动学结果正确性
     flag = *p;        // 用于标识是否完成了正向计算
     uint8_t i, j;
 
+//	float t[TV];
+//	float qt[TV * 5];
+//	float q0[5] = {0, 0, 0, 0, 0};
+//	float qd0[5];
+//	float qd1[5];
+//    float length = 100000;
+//    linspace(t, 0, 1, TV);
+//    zeros(qd0, 5);
+//    zeros(qd1, 5);
     if (flag == 1)
     {
         for (; flag < TFK_NUM; flag++) // 计算逆运动学的四种结果
@@ -214,10 +223,21 @@ void con_KM(float32_t Tfk[TFK_NUM][TFK_NUM], uint8_t *p)
             else
             {
                 printf("第%d组解:\n%11.6f %11.6f %11.6f %11.6f %11.6f\r\n", flag, Q[1], Q[2], Q[3], Q[4], Q[5]);
-                printf("验证第%d组解:\r\n", flag);
-                KM(Q, Tfk, p);
+                //printf("验证第%d组解:\r\n", flag);
+                //KM(Q, Tfk, p);
+                //compute_qt(t, qt, q0, Q + 1, qd0, qd1);
+//                if((compute_path(qt)) < length)
+//                {
+//                    length = compute_path(qt);
+//                    for(i = 1; i < 6; i++)
+//                    {
+//                        bestQ[i] = Q[i];
+//                    }
+//                }
             }
         }
+        //printf("最优解：\n%11.6f %11.6f %11.6f %11.6f %11.6f\r\n",bestQ[1], bestQ[2], bestQ[3], bestQ[4], bestQ[5]);
+        //printf("最优解的路径长度为：\n%11.6f \n",length);
     }
 }
 
@@ -287,4 +307,96 @@ void getTFK(EulerAngle ea, float32_t Tfk[TFK_NUM][TFK_NUM])
     Tfk[2][4] = ea.y;
     Tfk[3][4] = ea.z;
     Tfk[4][4] = 1;
+}
+
+void linspace(float *output, float start, float end, int num)
+{
+    float step = (end - start) / (num - 1);
+    for (int i = 0; i < num; i++)
+    {
+        output[i] = start + i * step;
+    }
+}
+
+/*
+*********************************************************************************************************
+*	函 数 名: zeros
+*	功能说明: 将数组清零
+*********************************************************************************************************
+*/
+void zeros(float *output, int size)
+{
+    for (int i = 0; i < size; i++)
+    {
+        output[i] = 0.0f;
+    }
+}
+
+/*
+*********************************************************************************************************
+*	函 数 名: compute_qt
+*	功能说明: 采用五次多项式生成关节空间的轨迹
+*	形    参：
+*               float *qt ：轨迹
+*	返 回 值:无
+*********************************************************************************************************
+*/
+void compute_qt(float *t, float *qt, float *q0, float *q1, float *qd0, float *qd1)
+{
+    float A[5], B[5], C[5], E[5], F[5];
+    float tt[6];
+    for (int i = 0; i < 5; i++)
+    {
+        A[i] = 6 * (q1[i] - q0[i]) - 3 * (qd1[i] + qd0[i]);
+        B[i] = -15 * (q1[i] - q0[i]) + (8 * qd0[i] + 7 * qd1[i]);
+        C[i] = 10 * (q1[i] - q0[i]) - (6 * qd0[i] + 4 * qd1[i]);
+        E[i] = qd0[i];
+        F[i] = q0[i];
+    }
+
+    for (int i = 0; i < TV; i++)
+    {
+        float t_pow[5];
+        for (int j = 0; j < 5; j++)
+        {
+            t_pow[j] = powf(t[i], 5 - j);
+        }
+
+        for (int j = 0; j < 6; j++)
+        {
+            tt[j] = t_pow[j];
+        }
+
+        for (int j = 0; j < 5; j++)
+        {
+            qt[i * 5 + j] = tt[0] * A[j] + tt[1] * B[j] + tt[2] * C[j] + tt[4] * E[j] + tt[5] * F[j];
+        }
+    }
+}
+
+/*
+*********************************************************************************************************
+*	函 数 名: compute_path
+*	功能说明: 计算路径长度
+*	形    参：
+*               float *qt ：轨迹
+*	返 回 值:   float length ：路径长度
+*********************************************************************************************************
+*/
+float compute_path(float *qt)
+{
+    uint8_t i,j;
+    float sqrt,sum,length;
+    length = 0.0;
+    for(i = 0;i < 9;i++)
+    {
+        sum = 0.0;
+        for(j = (i*5);j < ((i*5) + 5);j++)
+        {
+            sum += pow((qt[j+5] - qt[j]),2);
+        }
+        arm_sqrt_f32(sum,&sqrt);
+        length += sqrt;
+    }
+    return length;
 }
