@@ -190,20 +190,6 @@ void AppTaskUart1Rev(void *argument)
 */
 void AppTaskKineMatics(void *argument)
 {
-//    float Tfk[5][5];
-//    uint8_t p;
-//    KM(Tfk,&p);
-//    con_KM(Tfk,&p);
-    osStatus_t os_Status;
-    uint8_t ch;
-    while(1)
-    {
-        os_Status = osMessageQueueGet(msgQueue_ID_CAN1,&ch,NULL,osWaitForever);
-        if(os_Status == osOK)
-        {
-            printf("Get the message is %c\n",ch);
-        }
-    }
 
 }
 /********************************************by ZCH******************************************************/
@@ -224,6 +210,7 @@ void AppTaskUserIF(void *argument)
     float32_t c1,c2,c4,c5,s1,s2,s4,s5,c23,s23;
     uint8_t p;
     uint8_t i,j;
+    EulerAngle ea;
     while(1)
     {
 		ucKeyCode = bsp_GetKey();
@@ -256,6 +243,20 @@ void AppTaskUserIF(void *argument)
 					printf("正运动学计算\r\n");
                     p = 0;
                     KM(q,Tfk,&p);
+                    ea = getEulerAngle(Tfk);
+                    printf("getEulerAngle:\r\n");
+                    printf("%11.6f %11.6f %11.6f \r\n",ea.alpha,ea.bate,ea.gamma);
+                    getTFK(ea,Tfk);
+                    printf("getTFK:\r\n");
+                    
+                    for (i = 1; i < TFK_NUM; i++)
+                    {
+                        for (j = 1; j < TFK_NUM; j++)
+                        {
+                            printf("%11.6f ", Tfk[i][j]);
+                        }
+                        printf("\r\n");
+                    }
 					break;
                     
 				/* K2键按下，逆运动学计算并验证 */
@@ -310,10 +311,17 @@ void AppTaskLED(void *argument)
 */
 void AppTaskMsgPro(void *argument)
 {
-	while(1)
-	{
-		osDelay(10);
-	}	
+    osStatus_t os_Status;
+    uint8_t ch;
+    while(1)
+    {
+        os_Status = osMessageQueueGet(msgQueue_ID_CAN1,&ch,NULL,osWaitForever);
+        if(os_Status == osOK)
+        {
+            printf("Get the message is %c\n",ch);
+        }
+        osDelay(10);
+    }	
 }
 
 /*

@@ -14,8 +14,30 @@
 
 #include <arm_math.h>
 
-void KM(float32_t q[6],float32_t Tfk[5][5],uint8_t *p);
-void con_KM(float32_t Tfk[5][5],uint8_t *p);
+#define pi 3.1415926535
+#define TFK_NUM 5
+#define MAT_NUM 4
+/*
+*********************************************************************************************************
+*	结 构 体: struct Euler_angle
+*	功能说明: 保存欧拉角和空间坐标
+*********************************************************************************************************
+*/
+typedef struct EulerAngle
+{
+    float32_t alpha;
+    float32_t bate;
+    float32_t gamma;
+    float32_t x;
+    float32_t y;
+    float32_t z;
+}EulerAngle;
+
+void MatrixMul(float32_t Mat_a[MAT_NUM][MAT_NUM],float32_t Mat_b[MAT_NUM][MAT_NUM],float32_t Mat_c[MAT_NUM][MAT_NUM]);
+void KM(float32_t q[TFK_NUM+1],float32_t Tfk[TFK_NUM][TFK_NUM],uint8_t *p);
+void con_KM(float32_t Tfk[TFK_NUM][TFK_NUM],uint8_t *p);
+EulerAngle getEulerAngle(float32_t Tfk[TFK_NUM][TFK_NUM]);
+void getTFK(EulerAngle ea,float32_t Tfk[TFK_NUM][TFK_NUM]);
 
 #endif
 

@@ -71,7 +71,6 @@
 extern void SysTick_ISR(void);
 
 #define bsp_ProPer1ms  SysTick_ISR
-#define pi 3.1415926535
 
 #endif
 

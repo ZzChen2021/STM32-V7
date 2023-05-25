@@ -17,23 +17,75 @@
 #include <arm_math.h>
 #include <stdlib.h>
 #include <math.h>
+#include "KineMatics.h"
 
+/*
+*********************************************************************************************************
+*	函 数 名: MatrixMul
+*	功能说明: 矩阵相乘
+*	返 回 值: 无
+*********************************************************************************************************
+*/
+void MatrixMul(float32_t Mat_a[MAT_NUM][MAT_NUM], float32_t Mat_b[MAT_NUM][MAT_NUM], float32_t Mat_c[MAT_NUM][MAT_NUM])
+{
+    uint8_t i, j, k;
+    for (i = 1; i < MAT_NUM; i++)
+    {
+        for (j = 1; j < MAT_NUM; j++)
+        {
+            Mat_c[i][j] = 0;
+            for (k = 1; k < MAT_NUM; k++)
+            {
+                Mat_c[i][j] += Mat_a[i][k] * Mat_b[k][j];
+            }
+        }
+    }
+}
+
+/*
+*********************************************************************************************************
+*	函 数 名: getEulerAngle
+*	功能说明: 将齐次变换矩阵转换为欧拉角和空间坐标
+*	形    参：
+*               float32_t Tfk[TFK_NUM][TFK_NUM]：保存运动学公式计算出的角度值
+*	返 回 值:   EulerAngle ea ：保存欧拉角和空间坐标
+*********************************************************************************************************
+*/
+EulerAngle getEulerAngle(float32_t Tfk[TFK_NUM][TFK_NUM])
+{
+    EulerAngle ea;
+    float32_t Sqrt;
+    /* 弧度 */
+    arm_sqrt_f32((pow(Tfk[3][2], 2) + pow(Tfk[3][3], 2)), &Sqrt);
+    ea.bate = atan2(-Tfk[3][1], Sqrt);
+    ea.gamma = atan2(Tfk[2][1], Tfk[1][1]);
+    ea.alpha = atan2(Tfk[3][2], Tfk[3][3]);
+    /* 弧度转角度 */
+    ea.alpha = ((ea.alpha) / pi) * 180.0;
+    ea.bate = ((ea.bate) / pi) * 180.0;
+    ea.gamma = ((ea.gamma) / pi) * 180.0;
+    ea.x = Tfk[1][4];
+    ea.y = Tfk[2][4];
+    ea.z = Tfk[3][4];
+    
+    return ea;
+}
 /*
 *********************************************************************************************************
 *	函 数 名: KM
 *	功能说明: 正运动学计算
 *	形    参：
 *               float32_t q[6]：传入弧度值
-*               float Tfk[5][5]：保存运动学公式计算出的角度值
+*               float32_t Tfk[TFK_NUM][TFK_NUM]：保存运动学公式计算出的角度值
 *               unsigned char *p：用于标识是否计算出了Tfk
 *	返 回 值: 无
 *********************************************************************************************************
 */
-void KM(float32_t q[6], float32_t Tfk[5][5], uint8_t *p)
+void KM(float32_t q[TFK_NUM + 1], float32_t Tfk[TFK_NUM][TFK_NUM], uint8_t *p)
 {
     uint8_t i, j;
     float32_t c1, c2, c4, c5, s1, s2, s4, s5, c23, s23;
-    float32_t t[5][5]; // 用于验证，避免验证时改变原Tfk数组中的值
+    float32_t t[TFK_NUM][TFK_NUM]; // 用于验证，避免验证时改变原Tfk数组中的值
     c1 = arm_cos_f32(q[1]);
     c2 = arm_cos_f32(q[2]);
     c4 = arm_cos_f32(q[4]);
@@ -84,9 +136,9 @@ void KM(float32_t q[6], float32_t Tfk[5][5], uint8_t *p)
         Tfk[3][4] = 275 * c23 - 250 * s2;
         Tfk[4][4] = 1;
     }
-    for (i = 1; i < 5; i++)
+    for (i = 1; i < TFK_NUM; i++)
     {
-        for (j = 1; j < 5; j++)
+        for (j = 1; j < TFK_NUM; j++)
         {
             if ((*p) > 0)
             {
@@ -107,22 +159,22 @@ void KM(float32_t q[6], float32_t Tfk[5][5], uint8_t *p)
 *	函 数 名: con_KM
 *	功能说明: 逆运动学计算
 *	形    参：
-*               float Tfk[5][5]：保存运动学公式计算出的角度值
+*               float Tfk[TFK_NUM][TFK_NUM]：保存运动学公式计算出的角度值
 *               unsigned char *p：用于标识是否计算出了Tfk
 *	返 回 值: 无
 *********************************************************************************************************
 */
-void con_KM(float32_t Tfk[5][5], uint8_t *p)
+void con_KM(float32_t Tfk[TFK_NUM][TFK_NUM], uint8_t *p)
 {
     uint8_t flag;
-    float32_t Q[6], Q23, Sqart, cq1, sq1, sq4, cq23, sq23;
+    float32_t Q[TFK_NUM + 1], Q23, Sqart, cq1, sq1, sq4, cq23, sq23;
     float32_t qx, qy; // 用于判断逆运动学结果正确性
     flag = *p;        // 用于标识是否完成了正向计算
     uint8_t i, j;
 
     if (flag == 1)
     {
-        for (; flag < 5; flag++) // 计算逆运动学的四种结果
+        for (; flag < TFK_NUM; flag++) // 计算逆运动学的四种结果
         {
             /******************逆运动学公式******************/
             if ((flag == 1) || (flag == 3))
@@ -167,4 +219,72 @@ void con_KM(float32_t Tfk[5][5], uint8_t *p)
             }
         }
     }
+}
+
+/*
+*********************************************************************************************************
+*	函 数 名: getTFK
+*	功能说明: 将欧拉角和空间坐标转换为齐次变换矩阵
+*	形    参：
+*               EulerAngle ea ：保存欧拉角和空间坐标
+*               float Tfk[TFK_NUM][TFK_NUM]：保存运动学公式计算出的角度值
+*	返 回 值: 无
+*********************************************************************************************************
+*/
+void getTFK(EulerAngle ea, float32_t Tfk[TFK_NUM][TFK_NUM])
+{
+    ea.alpha = ((ea.alpha) / 180.0) * pi;
+    ea.bate = ((ea.bate) / 180.0) * pi;
+    ea.gamma = ((ea.gamma) / 180.0) * pi;
+    float32_t Rox[MAT_NUM][MAT_NUM], Roy[MAT_NUM][MAT_NUM], Roz[MAT_NUM][MAT_NUM];
+    float32_t mat[MAT_NUM][MAT_NUM], Mat[MAT_NUM][MAT_NUM];
+    Rox[1][1] = 1;
+    Rox[1][2] = 0;
+    Rox[1][3] = 0;
+    Rox[2][1] = 0;
+    Rox[2][2] = arm_cos_f32(ea.alpha);
+    Rox[2][3] = -arm_sin_f32(ea.alpha);
+    Rox[3][1] = 0;
+    Rox[3][2] = arm_sin_f32(ea.alpha);
+    Rox[3][3] = arm_cos_f32(ea.alpha);
+
+    Roy[1][1] = arm_cos_f32(ea.bate);
+    Roy[1][2] = 0;
+    Roy[1][3] = arm_sin_f32(ea.bate);
+    Roy[2][1] = 0;
+    Roy[2][2] = 1;
+    Roy[2][3] = 0;
+    Roy[3][1] = -arm_sin_f32(ea.bate);
+    Roy[3][2] = 0;
+    Roy[3][3] = arm_cos_f32(ea.bate);
+    
+    Roz[1][1] = arm_cos_f32(ea.gamma);
+    Roz[1][2] = -arm_sin_f32(ea.gamma);
+    Roz[1][3] = 0;
+    Roz[2][1] = arm_sin_f32(ea.gamma);
+    Roz[2][2] = arm_cos_f32(ea.gamma);
+    Roz[2][3] = 0;
+    Roz[3][1] = 0;
+    Roz[3][2] = 0;
+    Roz[3][3] = 1;
+    
+    MatrixMul(Roz, Roy, mat);
+    MatrixMul(mat, Rox, Mat);
+
+    Tfk[1][1] = Mat[1][1];
+    Tfk[2][1] = Mat[2][1];
+    Tfk[3][1] = Mat[3][1];
+    Tfk[4][1] = 0;
+    Tfk[1][2] = Mat[1][2];
+    Tfk[2][2] = Mat[2][2];
+    Tfk[3][2] = Mat[3][2];
+    Tfk[4][2] = 0;
+    Tfk[1][3] = Mat[1][3];
+    Tfk[2][3] = Mat[2][3];
+    Tfk[3][3] = Mat[3][3];
+    Tfk[4][3] = 0;
+    Tfk[1][4] = ea.x;
+    Tfk[2][4] = ea.y;
+    Tfk[3][4] = ea.z;
+    Tfk[4][4] = 1;
 }

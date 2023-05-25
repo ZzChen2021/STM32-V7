@@ -1,0 +1,194 @@
+<html>
+<body>
+<pre>
+<h1>礦ision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: μVision V5.37.0.0
+Copyright (C) 2022 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: CH Z, ZCH, LIC=P6F5U-SVPXB-5B3EB-2K22N-F68JR-SAQXV
+ 
+Tool Versions:
+Toolchain:       MDK-ARM Professional  Version: 5.37.0.0
+Toolchain Path:  D:\Program Files (x86)\Keil_v5\ARM\ARMCLANG\Bin
+C Compiler:      ArmClang.exe V6.18
+Assembler:       Armasm.exe V6.18
+Linker/Locator:  ArmLink.exe V6.18
+Library Manager: ArmAr.exe V6.18
+Hex Converter:   FromElf.exe V6.18
+CPU DLL:         SARMCM3.DLL V5.37.0.0
+Dialog DLL:      DCM.DLL V1.17.5.0
+Target DLL:      CMSIS_AGDI.dll V1.33.12.0
+Dialog DLL:      TCM.DLL V1.56.1.0
+ 
+<h2>Project:</h2>
+D:\Documents\Project\Stm32H7\按压止血机器人\正逆运动学计算\Project\MDK-ARM(AC6)\project.uvprojx
+Project File Date:  05/12/2023
+
+<h2>Output:</h2>
+*** Using Compiler 'V6.18', folder: 'D:\Program Files (x86)\Keil_v5\ARM\ARMCLANG\Bin'
+Rebuild target 'Flash'
+compiling bsp_led.c...
+compiling bsp_dwt.c...
+compiling bsp_beep.c...
+compiling bsp_timer.c...
+compiling main.c...
+compiling bsp.c...
+compiling bsp_key.c...
+compiling KineMatics.c...
+assembling startup_stm32h743xx.s...
+compiling stm32h7xx_it.c...
+compiling bsp_fmc_io.c...
+compiling stm32h7xx_hal_timebase_tim.c...
+compiling bsp_uart_fifo.c...
+compiling bsp_tim_pwm.c...
+compiling stm32h7xx_hal_cortex.c...
+compiling stm32h7xx_hal.c...
+compiling stm32h7xx_hal_gpio.c...
+compiling stm32h7xx_hal_rcc.c...
+compiling stm32h7xx_hal_dma_ex.c...
+compiling stm32h7xx_ll_fmc.c...
+compiling stm32h7xx_hal_rcc_ex.c...
+compiling stm32h7xx_hal_tim_ex.c...
+compiling stm32h7xx_hal_dma.c...
+compiling stm32h7xx_hal_uart_ex.c...
+compiling stm32h7xx_hal_sram.c...
+assembling HardFaultHandler.S...
+compiling system_stm32h7xx.c...
+compiling stm32h7xx_hal_mdma.c...
+compiling stm32h7xx_hal_uart.c...
+assembling irq_armv7m.S...
+compiling stm32h7xx_hal_tim.c...
+compiling SEGGER_HardFaultHandler.c...
+compiling rtx_delay.c...
+compiling rtx_evr.c...
+compiling rtx_evflags.c...
+compiling rtx_lib.c...
+compiling rtx_memory.c...
+compiling rtx_kernel.c...
+compiling rtx_mempool.c...
+compiling rtx_msgqueue.c...
+compiling RTX_Config.c...
+compiling rtx_mutex.c...
+compiling rtx_system.c...
+compiling rtx_semaphore.c...
+compiling os_systick.c...
+compiling retarget_io.c...
+compiling rtx_timer.c...
+compiling EventRecorder.c...
+compiling rtx_thread.c...
+linking...
+Program Size: Code=27760 RO-data=3788 RW-data=192 ZI-data=45544  
+FromELF: creating hex file...
+After Build - User command #1: CopyHex_Flash.bat
+D:\Documents\Project\Stm32H7\按压止血机器人\正逆运动学计算\Project\MDK-ARM(AC6)>copy Objects\output.hex ..\output(ac6).hex 
+已复制         1 个文件。
+".\Objects\output.axf" - 0 Error(s), 0 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: ARM
+                http://www.keil.com/pack/ARM.CMSIS.5.9.0.pack
+                ARM.CMSIS.5.9.0
+                CMSIS (Common Microcontroller Software Interface Standard)
+   * Component: RTOS2 Version: 2.1.3
+   * Component: CORE Version: 5.6.0
+   * Component: Keil RTX5 Variant: Source Version: 5.5.4
+
+Package Vendor: Keil
+                https://www.keil.com/pack/Keil.ARM_Compiler.1.7.2.pack
+                Keil.ARM_Compiler.1.7.2
+                Keil ARM Compiler extensions for ARM Compiler 5 and ARM Compiler 6
+   * Component: Event Recorder Variant: DAP Version: 1.5.1
+   * Component: STDOUT Variant: EVR Version: 1.2.0
+
+Package Vendor: Keil
+                http://www.keil.com/pack/Keil.STM32H7xx_DFP.3.0.0.pack
+                Keil.STM32H7xx_DFP.3.0.0
+                STMicroelectronics STM32H7 Series Device Support and Examples
+   * Component: Common Version: 1.9.0
+   * Component: Cortex Version: 1.9.0
+   * Component: GPIO Version: 1.9.0
+   * Component: PWR Version: 1.9.0
+   * Component: RCC Version: 1.9.0
+   * Component: Startup Version: 1.9.0
+
+<h2>Collection of Component include folders:</h2>
+  ./RTE/CMSIS
+  ./RTE/Compiler
+  ./RTE/_Flash
+  D:/Documents/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include
+  D:/Documents/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/RTOS2/Include
+  D:/Documents/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/RTOS2/RTX/Include
+  D:/Documents/AppData/Local/Arm/Packs/Keil/ARM_Compiler/1.7.2/Include
+  D:/Documents/AppData/Local/Arm/Packs/Keil/STM32H7xx_DFP/3.0.0/Drivers/CMSIS/Device/ST/STM32H7xx/Include
+
+<h2>Collection of Component Files used:</h2>
+
+   * Component: ::CMSIS:RTOS2:2.1.3 (API)
+      Include file:  CMSIS/RTOS2/Include/cmsis_os2.h
+
+   * Component: ARM::CMSIS:CORE:5.6.0
+
+   * Component: ARM::CMSIS:RTOS2:Keil RTX5:Source:5.5.4
+      Include file:  CMSIS/RTOS2/RTX/Include/rtx_os.h
+      Source file:   CMSIS/RTOS2/RTX/Template/MsgQueue.c
+      Source file:   CMSIS/RTOS2/RTX/Source/rtx_semaphore.c
+      Source file:   CMSIS/RTOS2/RTX/Source/rtx_memory.c
+      Source file:   CMSIS/RTOS2/RTX/Source/rtx_lib.c
+      Source file:   CMSIS/RTOS2/RTX/Source/rtx_thread.c
+      Source file:   CMSIS/RTOS2/RTX/Source/rtx_system.c
+      Source file:   CMSIS/RTOS2/RTX/Template/main.c
+      Source file:   CMSIS/RTOS2/RTX/Source/rtx_kernel.c
+      Source file:   CMSIS/RTOS2/RTX/Source/rtx_delay.c
+      Source file:   CMSIS/RTOS2/RTX/Source/rtx_mutex.c
+      Source file:   CMSIS/RTOS2/RTX/Template/Semaphore.c
+      Source file:   CMSIS/RTOS2/RTX/Source/rtx_evr.c
+      Source file:   CMSIS/RTOS2/RTX/Template/Mutex.c
+      Include file:  CMSIS/RTOS2/RTX/Config/RTX_Config.h
+      Source file:   CMSIS/RTOS2/RTX/Template/MemPool.c
+      Source file:   CMSIS/RTOS2/RTX/Source/rtx_timer.c
+      Source file:   CMSIS/RTOS2/RTX/Source/rtx_msgqueue.c
+      Source file:   CMSIS/RTOS2/RTX/Template/Thread.c
+      Source file:   CMSIS/RTOS2/RTX/Source/rtx_mempool.c
+      Source file:   CMSIS/RTOS2/RTX/Config/RTX_Config.c
+      Source file:   CMSIS/RTOS2/RTX/Template/Events.c
+      Source file:   CMSIS/RTOS2/RTX/Source/rtx_evflags.c
+      Source file:   CMSIS/RTOS2/RTX/Source/GCC/irq_armv7m.S
+      Source file:   CMSIS/RTOS2/RTX/Template/Timer.c
+      Source file:   CMSIS/RTOS2/RTX/Template/svc_user.c
+      Source file:   CMSIS/RTOS2/Source/os_systick.c
+
+   * Component: Keil.ARM Compiler::Compiler:Event Recorder:DAP:1.5.1
+      Source file:   Source/EventRecorder.c
+      Include file:  Include/EventRecorder.h
+      Include file:  Config/EventRecorderConf.h
+
+   * Component: Keil.ARM Compiler::Compiler:I/O:STDOUT:EVR:1.2.0
+      Source file:   Source/retarget_io.c
+
+   * Component: Keil::Device:STM32Cube HAL:Common:1.9.0
+      Source file:   Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal.c
+      Include file:  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h
+
+   * Component: Keil::Device:STM32Cube HAL:Cortex:1.9.0
+      Source file:   Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_cortex.c
+
+   * Component: Keil::Device:STM32Cube HAL:GPIO:1.9.0
+      Source file:   Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_gpio.c
+
+   * Component: Keil::Device:STM32Cube HAL:PWR:1.9.0
+      Source file:   Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pwr_ex.c
+      Source file:   Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pwr.c
+
+   * Component: Keil::Device:STM32Cube HAL:RCC:1.9.0
+      Source file:   Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rcc_ex.c
+      Source file:   Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rcc.c
+
+   * Component: Keil::Device:Startup:1.9.0
+      Include file:  Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h7xx.h
+      Source file:   Drivers/CMSIS/Device/ST/STM32H7xx/Source/Templates/arm/startup_stm32h743xx.s
+      Source file:   Drivers/CMSIS/Device/ST/STM32H7xx/Source/Templates/system_stm32h7xx.c
+Build Time Elapsed:  00:00:06
+</pre>
+</body>
+</html>
